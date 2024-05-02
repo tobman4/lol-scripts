@@ -7,7 +7,9 @@ from rich.console import Console
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-parser = ArgumentParser()
+parser = ArgumentParser(
+  description="Change lobby to tft then leav"
+)
 
 parser.add_argument(
   "-w",
@@ -32,7 +34,7 @@ parser.add_argument(
 
 args = parser.parse_args()
 
-def create_loby():
+def create_lobby():
   
   url = f"https://127.0.0.1:{args.port}/lol-lobby/v2/lobby"
 
@@ -59,7 +61,7 @@ def start_search():
     auth=("riot",args.password),
   )
 
-def leav_loby():
+def leav_lobby():
   url = f"https://127.0.0.1:{args.port}/lol-lobby/v2/lobby"
 
   requests.delete(
@@ -74,12 +76,12 @@ if __name__ == "__main__":
   console = Console()
 
   with console.status("Doing funny") as status:
-    console.log("creating tft loby")
-    create_loby()
+    console.log("creating tft lobby")
+    create_lobby()
 
     if(args.try_start):
       console.log("starting queue")
       start_search()
 
-    console.log("leaving loby")
-    leav_loby()
+    console.log("leaving lobby")
+    leav_lobby()
