@@ -1,5 +1,5 @@
 import json
-from argparse import ArgumentParser
+from argparse import ArgumentParser, FileType
 
 import requests
 from rich.console import Console
@@ -12,16 +12,20 @@ parser = ArgumentParser(
 )
 
 parser.add_argument(
+  "-l",
+  dest="lockfile",
+  type=FileType("r")
+)
+
+parser.add_argument(
   "-w",
-  dest="password",
-  required=True
+  dest="password"
 )
 
 parser.add_argument(
   "-p",
   type=int,
-  dest="port",
-  required=True
+  dest="port"
 )
 
 parser.add_argument(
@@ -33,6 +37,13 @@ parser.add_argument(
 
 
 args = parser.parse_args()
+
+def load_lockfile():
+  
+  data = args.lockfile.readline().strip().split(":")
+  args.password = data[3]
+  args.port = int(data[2])
+
 
 def create_lobby():
   
@@ -72,6 +83,8 @@ def leav_lobby():
 
 
 if __name__ == "__main__":
+  if(args.lockfile is not None):
+    load_lockfile()
 
   console = Console()
 
