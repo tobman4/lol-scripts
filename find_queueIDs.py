@@ -87,7 +87,9 @@ if __name__ == "__main__":
   file.write(
     "id,gameMode,mapId,queueId\n"
   )
-  file.write(str(id) + ",")
+  file.write(str(args.queueId) + ",")
+
+  str_line = map(lambda e: str(e), csv_line)
   file.write(
-    ",".join(csv_line) + "\n"
+    ",".join(str_line) + "\n"
   )
