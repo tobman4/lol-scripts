@@ -1,4 +1,5 @@
 
+from io import TextIOWrapper
 import json
 from argparse import ArgumentParser, FileType
 
@@ -17,6 +18,13 @@ parser.add_argument(
   dest="lockfile",
   default="C:\\Riot Games\\League of Legends\\lockfile",
   type=FileType("r")
+)
+
+parser.add_argument(
+  "-f",
+  dest="out",
+  required=True,
+  type=FileType("w")
 )
 
 parser.add_argument(
@@ -40,7 +48,7 @@ def try_create_lobby(id: int):
     "queueId": id
   }
 
-  requests.post(
+  response = requests.post(
     url,
     verify=False,
     auth=("riot",args.password),
@@ -50,6 +58,35 @@ def try_create_lobby(id: int):
     data=json.dumps(body)
   )
 
+  if(not response.ok):
+    return None
+
+  return response.json()
+
+def get_lobby_info(data):
+  config = data.get("gameConfig")
+  
+  return (
+    config.get("gameMode"),
+    config.get("mapId"),
+    config.get("queueId")
+  )
 
 if __name__ == "__main__":
-  try_create_lobby(args.queueId)
+  data = try_create_lobby(args.queueId)
+  
+  if(data is None):
+    exit(1)
+
+  csv_line = get_lobby_info(data)
+  
+
+  file: TextIOWrapper = args.out
+
+  file.write(
+    "id,gameMode,mapId,queueId\n"
+  )
+  file.write(str(id) + ",")
+  file.write(
+    ",".join(csv_line) + "\n"
+  )
