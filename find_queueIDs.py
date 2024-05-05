@@ -52,4 +52,5 @@ def try_create_lobby(id: int):
 
 
 if __name__ == "__main__":
+  load_lockfile()
   try_create_lobby(args.queueId)
