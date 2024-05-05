@@ -14,6 +14,7 @@ parser = ArgumentParser(
 parser.add_argument(
   "-l",
   dest="lockfile",
+  default="C:\\Riot Games\\League of Legends\\lockfile",
   type=FileType("r")
 )
 
