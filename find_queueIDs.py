@@ -107,6 +107,8 @@ def write_info(id: int):
   )
 
 if __name__ == "__main__":
+  load_lockfile()
+
 
   if(args.end < args.start):
     print("end cant be less then start")
@@ -118,7 +120,7 @@ if __name__ == "__main__":
   )
 
   i = args.start
-  while(i < args.end):
+  while(i <= args.end):
     print(f"Trying queue id {i}")
     write_info(i)
     i+=1
