@@ -1,6 +1,7 @@
 
 from io import TextIOWrapper
 import json
+from time import sleep
 from argparse import ArgumentParser, FileType
 
 import requests
@@ -27,10 +28,31 @@ parser.add_argument(
   type=FileType("w")
 )
 
+# parser.add_argument(
+#   "-q",
+#   dest="queueId",
+#   help="queue id to create lobby"
+# )
+
 parser.add_argument(
-  "-q",
-  dest="queueId",
-  help="queue id to create lobby"
+  "-s",
+  type=int,
+  required=True,
+  dest="start"
+)
+
+parser.add_argument(
+  "-e",
+  type=int,
+  required=True,
+  dest="end"
+)
+
+parser.add_argument(
+  "-d",
+  type=int,
+  default=1,
+  dest="delay"
 )
 
 args = parser.parse_args()
@@ -72,21 +94,34 @@ def get_lobby_info(data):
     config.get("queueId")
   )
 
-if __name__ == "__main__":
-  data = try_create_lobby(args.queueId)
-  
+def write_info(id: int):
+  data = try_create_lobby(id)
   if(data is None):
-    exit(1)
+    return
 
   csv_line = get_lobby_info(data)
-  
-
   file: TextIOWrapper = args.out
-
-  file.write(
-    "id,gameMode,mapId,queueId\n"
-  )
   file.write(str(id) + ",")
   file.write(
     ",".join(csv_line) + "\n"
   )
+
+if __name__ == "__main__":
+
+  if(args.end < args.start):
+    print("end cant be less then start")
+    exit(1)
+
+  file: TextIOWrapper = args.out
+  file.write(
+    "id,gameMode,mapId,queueId\n"
+  )
+
+  i = args.start
+  while(i < args.end):
+    print(f"Trying queue id {i}")
+    write_info(i)
+    i+=1
+    sleep(args.delay);
+
+  file.close()
