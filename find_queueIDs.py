@@ -103,7 +103,7 @@ def write_info(id: int):
   file: TextIOWrapper = args.out
   file.write(str(id) + ",")
   file.write(
-    ",".join(str_line) + "\n"
+    ",".join(csv_line) + "\n"
   )
 
 if __name__ == "__main__":
