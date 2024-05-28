@@ -59,28 +59,6 @@ parser.add_argument(
 
 args = parser.parse_args()
 
-def try_create_lobby(id: int):
-  url = f"https://127.0.0.1:{lockfile.get_port()}/lol-lobby/v2/lobby"
-
-  body = {
-    "queueId": id
-  }
-
-  response = requests.post(
-    url,
-    verify=False,
-    auth=("riot",lockfile.get_password()),
-    headers={
-      "content-type": "application/json"
-    },
-    data=json.dumps(body)
-  )
-
-  if(not response.ok):
-    return None
-
-  return response.json()
-
 def get_lobby_info(data):
   config = data.get("gameConfig")
   
@@ -91,7 +69,7 @@ def get_lobby_info(data):
   )
 
 def write_info(id: int):
-  data = try_create_lobby(id)
+  data = lobby.try_create_lobby(id)
   if(data is None):
     return
 
