@@ -96,10 +96,12 @@ def write_info(id: int):
     return
 
   csv_line = get_lobby_info(data)
+  str_line = map(lambda e: str(e), csv_line)
+
   file: TextIOWrapper = args.out
   file.write(str(id) + ",")
   file.write(
-    ",".join(csv_line) + "\n"
+    ",".join(str_line) + "\n"
   )
 
 if __name__ == "__main__":
