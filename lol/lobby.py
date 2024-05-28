@@ -26,3 +26,21 @@ def try_create_lobby(id: int):
     return None
 
   return response.json()
+
+def leav_lobby():
+  url = f"https://127.0.0.1:{lockfile.get_port()}/lol-lobby/v2/lobby"
+
+  requests.delete(
+    url,
+    verify=False,
+    auth=("riot",lockfile.get_password())
+  )
+
+def start_search():
+  url = f"https://127.0.0.1:{lockfile.get_port()}/lol-lobby/v2/lobby/matchmaking/search"
+
+  requests.post(
+    url,
+    verify=False,
+    auth=("riot",lockfile.get_password()),
+  )
