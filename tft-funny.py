@@ -7,6 +7,8 @@ from rich.console import Console
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+from lol import *
+
 parser = ArgumentParser(
   description="Change lobby to tft then leav"
 )
@@ -19,17 +21,6 @@ parser.add_argument(
 )
 
 parser.add_argument(
-  "-w",
-  dest="password"
-)
-
-parser.add_argument(
-  "-p",
-  type=int,
-  dest="port"
-)
-
-parser.add_argument(
   "-s",
   help="Try to start the queue before leaving",
   dest="try_start",
@@ -39,16 +30,9 @@ parser.add_argument(
 
 args = parser.parse_args()
 
-def load_lockfile():
-  
-  data = args.lockfile.readline().strip().split(":")
-  args.password = data[3]
-  args.port = int(data[2])
-
-
 def create_lobby():
   
-  url = f"https://127.0.0.1:{args.port}/lol-lobby/v2/lobby"
+  url = f"https://127.0.0.1:{lockfile.get_port()}/lol-lobby/v2/lobby"
 
   body = {
     "queueId": 1090 # TFT queue id
@@ -57,7 +41,7 @@ def create_lobby():
   requests.post(
     url,
     verify=False,
-    auth=("riot",args.password),
+    auth=("riot",lockfile.get_password()),
     headers={
       "content-type": "application/json"
     },
@@ -65,27 +49,26 @@ def create_lobby():
   )
 
 def start_search():
-  url = f"https://127.0.0.1:{args.port}/lol-lobby/v2/lobby/matchmaking/search"
+  url = f"https://127.0.0.1:{lockfile.get_port()}/lol-lobby/v2/lobby/matchmaking/search"
 
   requests.post(
     url,
     verify=False,
-    auth=("riot",args.password),
+    auth=("riot",lockfile.get_password()),
   )
 
 def leav_lobby():
-  url = f"https://127.0.0.1:{args.port}/lol-lobby/v2/lobby"
+  url = f"https://127.0.0.1:{lockfile.get_port()}/lol-lobby/v2/lobby"
 
   requests.delete(
     url,
     verify=False,
-    auth=("riot",args.password)
+    auth=("riot",lockfile.get_password())
   )
 
 
 if __name__ == "__main__":
-  if(args.lockfile is not None):
-    load_lockfile()
+  lockfile.load_file(args.lockfile)
 
   console = Console()
 
