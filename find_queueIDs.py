@@ -10,6 +10,8 @@ import requests
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+from lol import *
+
 parser = ArgumentParser(
   description="TODO"
 )
@@ -57,14 +59,8 @@ parser.add_argument(
 
 args = parser.parse_args()
 
-def load_lockfile():
-  
-  data = args.lockfile.readline().strip().split(":")
-  args.password = data[3]
-  args.port = int(data[2])
-
 def try_create_lobby(id: int):
-  url = f"https://127.0.0.1:{args.port}/lol-lobby/v2/lobby"
+  url = f"https://127.0.0.1:{lockfile.get_port()}/lol-lobby/v2/lobby"
 
   body = {
     "queueId": id
@@ -73,7 +69,7 @@ def try_create_lobby(id: int):
   response = requests.post(
     url,
     verify=False,
-    auth=("riot",args.password),
+    auth=("riot",lockfile.get_password()),
     headers={
       "content-type": "application/json"
     },
@@ -107,8 +103,7 @@ def write_info(id: int):
   )
 
 if __name__ == "__main__":
-  load_lockfile()
-
+  lockfile.load_file(args.lockfile)
 
   if(args.end < args.start):
     print("end cant be less then start")
