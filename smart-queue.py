@@ -46,19 +46,19 @@ if __name__ == "__main__":
   while(True):
     sec_in_queue = (datetime.now() - start_time).total_seconds()
     state = lobby.get_search_state()
-    # console.log(f"[{sec_in_queue:.2f}]: {state}")
+    # console.log(f"[{sec_in_queue:.0f}s]: {state}")
 
     if(sec_in_queue > args.max_queue and state == "Searching"):
-      console.log(f"[{sec_in_queue:.2f}] Queue to long")
+      console.log(f"[{sec_in_queue:.0f}s] Queue to long")
       lobby.stop_search()
       time.sleep(args.break_time)
 
-      console.log("[0] Restarting queue")
+      console.log("[0s] Restarting queue")
       lobby.start_search()
       start_time = datetime.now()
 
     if(state == "Found"):
-      console.log(f"[{sec_in_queue:.2f}] Found game")
+      console.log(f"[{sec_in_queue:.0f}s] Found game")
       lobby.accept_ready_check()
       exit(0)
 
