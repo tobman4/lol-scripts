@@ -44,3 +44,46 @@ def start_search():
     verify=False,
     auth=("riot",lockfile.get_password()),
   )
+
+def stop_search():
+  url = f"https://127.0.0.1:{lockfile.get_port()}/lol-lobby/v2/lobby/matchmaking/search"
+
+  requests.delete(
+    url=url,
+    verify=False,
+    auth=("riot",lockfile.get_password())
+  )
+
+def get_search_state():
+  url = f"https://127.0.0.1:{lockfile.get_port()}/lol-lobby/v2/lobby/matchmaking/search-state"
+
+  response = requests.get(
+    url=url,
+    verify=False,
+    auth=("riot", lockfile.get_password())
+  )
+
+  if(not response.ok):
+    return None
+
+  data = response.json()
+
+  return data["searchState"]
+
+def accept_ready_check():
+  url = f"https://127.0.0.1:{lockfile.get_port()}/lol-matchmaking/v1/ready-check/accept"
+
+  requests.post(
+    url=url,
+    verify=False,
+    auth=("riot",lockfile.get_password())
+  )
+
+def stop_queue():
+  url = f"https://127.0.0.1:{lockfile.get_port()}/lol-matchmaking/v1/search"
+
+  requests.delete(
+    url=url,
+    verify=False,
+    auth=("riot",lockfile.get_password())
+  )
