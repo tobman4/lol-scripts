@@ -7,9 +7,6 @@ from argparse import ArgumentParser, FileType
 import requests
 # from rich.console import Console
 
-import urllib3
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
 from lol import *
 
 parser = ArgumentParser(
