@@ -5,6 +5,20 @@ import rich
 
 from . import lockfile
 
+def get_lobby():
+  url = f"https://127.0.0.1:{lockfile.get_port()}/lol-lobby/v2/lobby"
+
+  response = requests.get(
+    url=url,
+    verify=False,
+    auth=("riot", lockfile.get_password())
+  )
+
+  if(not response.ok):
+    return None
+  
+  return response.json()
+
 def try_create_lobby(id: int):
   url = f"https://127.0.0.1:{lockfile.get_port()}/lol-lobby/v2/lobby"
 
