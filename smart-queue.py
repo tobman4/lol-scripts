@@ -33,6 +33,7 @@ parser.add_argument(
 
 parser.add_argument(
   "--no-accept",
+  help="dont accept match when found",
   dest="no_accept",
   action="store_true"
 )
@@ -66,6 +67,6 @@ if __name__ == "__main__":
       console.log(f"[{sec_in_queue:.0f}s] Found game")
       if(not args.no_accept):
         lobby.accept_ready_check()
-      exit(0)
+        exit(0)
 
     time.sleep(2)
