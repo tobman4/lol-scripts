@@ -1,6 +1,6 @@
 import requests
 
-from . import lockfile
+import lockfile
 
 def get_summoner():
   url = f"https://127.0.0.1:{lockfile.get_port()}/lol-summoner/v1/current-summoner"
