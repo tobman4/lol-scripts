@@ -44,3 +44,9 @@ def get_password():
 def get_protocl():
   data = get_all_fields()
   return data[4]
+
+def get_url(path: str):
+  return f"https://127.0.0.1:{get_port()}/{path}"
+
+def get_auth():
+  return ("riot", get_password())
