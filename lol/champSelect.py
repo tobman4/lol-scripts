@@ -2,7 +2,7 @@ import json
 
 import requests
 
-import lockfile
+from . import lockfile, summoner
 
 def shallow_call(func):
   def wrapper():
@@ -68,16 +68,14 @@ def complete_actions(data):
     auth=lockfile.get_auth()
   )
 
-# TODO: Get local player
+def get_local_player():
+  summoner_data = summoner.get_summoner()
+  session = set_session()
 
-if __name__ == "__main__":
-  lockfile.load_path("C:\Riot Games\League of Legends\lockfile")
+  team = session["myTeam"]
 
+  for player in team:
+    if(player["puuid"] == summoner_data["puuid"]):
+      return player
 
-  p = get_current_action()
-  a = p[0]
-
-  if(p["type"] == "ban"):
-    a["championId"] = 103
-
-  complete_actions(a)
+  return None
