@@ -12,6 +12,14 @@ parser.add_argument(
   type=FileType("r")
 )
 
+parser.add_argument(
+  "-i",
+  dest="championID",
+  type=int,
+  default=103,
+  help="Champion ID to ban. Default is Ahri"
+)
+
 args = parser.parse_args()
 
 if __name__ == "__main__":
@@ -28,7 +36,7 @@ if __name__ == "__main__":
 
     for action in pending_actions:
       if(action["actorCellId"] == player["cellId"] and action["type"] == "ban"):
-        action["championId"] = 103
+        action["championId"] = args.championID
         champSelect.complete_actions(action)
     
     time.sleep(.5)
