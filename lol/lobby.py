@@ -3,7 +3,7 @@ import requests
 
 import rich
 
-import lockfile
+from . import lockfile
 
 def get_lobby():
   url = f"https://127.0.0.1:{lockfile.get_port()}/lol-lobby/v2/lobby"
