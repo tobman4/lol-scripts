@@ -8,6 +8,7 @@ from rich.logging import RichHandler
 import rich.spinner
 
 from lol import lockfile, champSelect
+from ddragon import champions
 
 parser = ArgumentParser("Test script")
 
@@ -18,12 +19,20 @@ parser.add_argument(
   type=FileType("r")
 )
 
+# parser.add_argument(
+#   "-i",
+#   dest="championID",
+#   type=int,
+#   default=103,
+#   help="Champion ID to ban. Default is Ahri"
+# )
+
 parser.add_argument(
-  "-i",
-  dest="championID",
-  type=int,
-  default=103,
-  help="Champion ID to ban. Default is Ahri"
+  "-c",
+  help="Name of champion to ban. Default Ahri",
+  default="Ahri",
+  dest="champion",
+  type=str
 )
 
 args = parser.parse_args()
@@ -33,6 +42,8 @@ if __name__ == "__main__":
   lockfile.load_file(args.lockfile)
   console = Console()
 
+  championID = champions.get_by_name(args.champion)["key"]
+  
   with console.status("[bold red]I am alive...[/bold red]") as status:
     while(True):
       session = champSelect.get_session()
@@ -50,7 +61,7 @@ if __name__ == "__main__":
         if(action["actorCellId"] == player["cellId"] and action["type"] == "ban"):
           # console.print("[bold red]Hammer time!![/bold red]")
           status.update("[bold red]Hammer time!!!!![/bold red]")
-          action["championId"] = args.championID
+          action["championId"] = championID
           champSelect.complete_actions(action)
 
       # time.sleep(.1)
