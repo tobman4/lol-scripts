@@ -2,7 +2,7 @@ import json
 
 import requests
 
-from . import lockfile, summoner
+from . import http, lockfile, summoner
 
 def shallow_call(func):
   def wrapper():
@@ -16,9 +16,9 @@ def shallow_call(func):
   return wrapper
 
 @shallow_call
-def set_session():
+def get_session():
   url = lockfile.get_url("lol-champ-select/v1/session")
-
+  
   return requests.get(
     url=url,
     verify=False,
@@ -26,7 +26,7 @@ def set_session():
   )
 
 def get_current_action():
-  session = set_session()
+  session = get_session()
 
   if(session is None):
     return
@@ -37,7 +37,7 @@ def get_current_action():
 
   for action_group in actions:
     for action in action_group:
-      if(action["isInProgress"]):
+      if(action["isInProgress"] and not action["completed"]):
         inProgress.append(action)
 
   return inProgress
@@ -70,7 +70,7 @@ def complete_actions(data):
 
 def get_local_player():
   summoner_data = summoner.get_summoner()
-  session = set_session()
+  session = get_session()
 
   team = session["myTeam"]
 
