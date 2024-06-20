@@ -2,7 +2,7 @@ import json
 
 import requests
 
-from . import http, lockfile, summoner
+from . import lockfile, summoner
 
 def shallow_call(func):
   def wrapper():
