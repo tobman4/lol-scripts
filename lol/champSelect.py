@@ -72,6 +72,9 @@ def get_local_player():
   summoner_data = summoner.get_summoner()
   session = get_session()
 
+  if(session is None):
+    return None
+
   team = session["myTeam"]
 
   for player in team:
