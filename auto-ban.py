@@ -56,7 +56,10 @@ if __name__ == "__main__":
       
       player = champSelect.get_local_player()
       pending_actions = champSelect.get_current_action()
-      
+
+      if(player is None or pending_actions is None):
+        continue
+
       for action in pending_actions:
         if(action["actorCellId"] == player["cellId"] and action["type"] == "ban"):
           # console.print("[bold red]Hammer time!![/bold red]")
