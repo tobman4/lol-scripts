@@ -31,6 +31,15 @@ def get_by_name_detailed(name: str):
   
   return result.json()
 
+def get_id_by_name(name: str):
+  champs = get_champions()
+  
+  for c in champs:
+    if(champs[c]["id"] == name):
+      return int(champs[c]["key"])
+
+  return None
+
 def get_by_name(name: str):
   champs = get_champions()
 
