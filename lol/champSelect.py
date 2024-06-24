@@ -82,3 +82,22 @@ def get_local_player():
       return player
 
   return None
+
+def reroll():
+  url = lockfile.get_url("lol-champ-select/v1/session/my-selection/reroll")
+
+  requests.post(
+    url=url,
+    verify=False,
+    auth=lockfile.get_auth()
+  )
+
+
+def swapFromBench(champId: int):
+  url = lockfile.get_url(f"lol-champ-select/v1/session/bench/swap/{champId}")
+
+  requests.post(
+    url=url,
+    auth=lockfile.get_auth(),
+    verify=False
+  )
