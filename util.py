@@ -2,6 +2,18 @@ import re
 import time
 import random
 import logging
+from argparse import Namespace
+
+from rich.logging import RichHandler
+
+def add_logging(args: Namespace):
+  
+  logging.basicConfig(
+    level="DEBUG",
+    format="%(message)s",
+    datefmt="[%X]",
+    handlers=[RichHandler()]
+  )
 
 def sleep_for_range(txt: str):
   rx = "^(\d+)(?::(\d+))?$"

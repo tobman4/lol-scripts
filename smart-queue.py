@@ -43,6 +43,7 @@ args = parser.parse_args()
 
 if __name__ == "__main__":
   console = Console()
+  util.add_logging(args)
 
   lockfile.load_file(args.lockfile)
 
