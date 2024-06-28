@@ -1,5 +1,6 @@
-from argparse import ArgumentParser, FileType
 import json
+import os
+from argparse import ArgumentParser, FileType
 
 import rich.json
 from rich.panel import Panel
@@ -16,9 +17,34 @@ parser.add_argument(
   type=FileType("r")
 )
 
+parser.add_argument(
+  "-d",
+  default="./dbg-data",
+  dest="dir",
+  type=str
+)
+
 args = parser.parse_args()
 
-def render_data_block(name: str, data: any):
+def ensure_dir(path: str):
+  if(os.path.isdir(path)):
+    return True
+  
+  if(os.path.exists(path)):
+    print(f"{path} is not a dir");
+    return False
+  
+  os.makedirs(path)
+  return True
+
+def write_data(name: str, data: any):
+  path = os.path.join(args.dir, f"{name}.json")
+  
+  print(f"Writing {path}")
+  with(open(path, "f") as f):
+    json.dump(data, f)
+
+def old_and_bad(name: str, data: any):
   if(data is None):
     c.print(f"[bold red]No {name} data![/bold red]")
     return
@@ -37,6 +63,9 @@ def render_data_block(name: str, data: any):
 
 if __name__ == "__main__":
   
+  if(not ensure_dir(args.dir)):
+    exit(1)
+
   # Prep
   data = {}
   # pretty.install()
@@ -54,8 +83,8 @@ if __name__ == "__main__":
     
 
 
-  render_data_block("User", user)
-  render_data_block("Lobby", party)
-  render_data_block("EOG", eog_data)
-  render_data_block("Champ select session", session)
+  write_data("User", user)
+  write_data("Lobby", party)
+  write_data("EOG", eog_data)
+  write_data("Champ select session", session)
   c.print(f"[bold]Phase:[/bold] {gamephase}")
