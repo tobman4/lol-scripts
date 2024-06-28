@@ -5,7 +5,7 @@ import rich.json
 from rich.panel import Panel
 from rich import pretty, console
 
-from lol import summoner,lockfile, lobby,client, eog
+from lol import *
 
 parser = ArgumentParser("TODO")
 
@@ -50,9 +50,12 @@ if __name__ == "__main__":
     party = lobby.get_lobby()  
     gamephase = client.get_gameflow_phase()
     eog_data = eog.get_eog_data()
+    session = champSelect.get_session()
+    
 
 
   render_data_block("User", user)
   render_data_block("Lobby", party)
   render_data_block("EOG", eog_data)
+  render_data_block("Champ select session", session)
   c.print(f"[bold]Phase:[/bold] {gamephase}")

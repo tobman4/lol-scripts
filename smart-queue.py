@@ -4,6 +4,7 @@ from argparse import ArgumentParser,FileType
 
 from rich.console import Console
 
+import util
 from lol import *
 
 parser = ArgumentParser("Test script")
@@ -26,9 +27,9 @@ parser.add_argument(
 parser.add_argument(
   "-b",
   help="TODO",
-  default=5,
+  default="5",
   dest="break_time",
-  type=int
+  type=str
 )
 
 parser.add_argument(
@@ -42,6 +43,7 @@ args = parser.parse_args()
 
 if __name__ == "__main__":
   console = Console()
+  util.add_logging(args)
 
   lockfile.load_file(args.lockfile)
 
@@ -57,7 +59,8 @@ if __name__ == "__main__":
     if(sec_in_queue > args.max_queue and state == "Searching"):
       console.log(f"[{sec_in_queue:.0f}s] Queue to long")
       lobby.stop_search()
-      time.sleep(args.break_time)
+      util.sleep_for_range(args.break_time)
+      # time.sleep(args.break_time)
 
       console.log("[0s] Restarting queue")
       lobby.start_search()
