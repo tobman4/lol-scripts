@@ -40,9 +40,13 @@ def ensure_dir(path: str):
 def write_data(name: str, data: any):
   path = os.path.join(args.dir, f"{name}.json")
   
+  if(data is None):
+    print(f"No {name} data")
+    return
+
   print(f"Writing {path}")
-  with(open(path, "f") as f):
-    json.dump(data, f)
+  with(open(path, "w") as f):
+    json.dump(data, f, indent=2)
 
 def old_and_bad(name: str, data: any):
   if(data is None):
@@ -83,8 +87,8 @@ if __name__ == "__main__":
     
 
 
-  write_data("User", user)
-  write_data("Lobby", party)
-  write_data("EOG", eog_data)
-  write_data("Champ select session", session)
+  write_data("user", user)
+  write_data("lobby", party)
+  write_data("end-of-game", eog_data)
+  write_data("champ-select", session)
   c.print(f"[bold]Phase:[/bold] {gamephase}")
