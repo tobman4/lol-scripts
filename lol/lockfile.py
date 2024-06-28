@@ -1,7 +1,9 @@
 from io import TextIOWrapper
 
+from requests.sessions import Session
 
 _text: str | None = None
+_session: Session | None = None
 
 def load_file(file: TextIOWrapper):
   global _text
@@ -50,3 +52,13 @@ def get_url(path: str):
 
 def get_auth():
   return ("riot", get_password())
+
+def get_session():
+  global _session
+
+  if(_session is None):
+    _session = Session()
+    _session.verify = False
+    _session.auth = get_auth()
+
+  return _session
