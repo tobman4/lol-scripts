@@ -27,7 +27,7 @@ parser.add_argument(
 parser.add_argument(
   "-b",
   help="TODO",
-  default=5,
+  default="5",
   dest="break_time",
   type=str
 )
