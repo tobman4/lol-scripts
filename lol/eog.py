@@ -3,12 +3,10 @@ import requests
 from . import lockfile
 
 def get_eog_data():
-  url = f"https://127.0.0.1:{lockfile.get_port()}/lol-end-of-game/v1/eog-stats-block"
+  url = lockfile.get_url("lol-end-of-game/v1/eog-stats-block")
 
-  response = requests.get(
-    url=url,
-    verify=False,
-    auth=("riot",lockfile.get_password())
+  response = lockfile.get_session().get(
+    url=url
   )
 
   if(not response.ok):

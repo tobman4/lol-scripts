@@ -19,10 +19,8 @@ def shallow_call(func):
 def get_session():
   url = lockfile.get_url("lol-champ-select/v1/session")
   
-  return requests.get(
-    url=url,
-    verify=False,
-    auth=lockfile.get_auth()
+  return lockfile.get_session().get(
+    url=url
   )
 
 def get_current_action():
@@ -51,10 +49,8 @@ def complete_actions(data):
   comlete_url = lockfile.get_url(f"lol-champ-select/v1/session/actions/{action_id}/complete")
 
   # Update action
-  requests.patch(
+  lockfile.get_session().patch(
     url=path_url,
-    verify=False,
-    auth=lockfile.get_auth(),
     headers={
       "Content-Type": "application/json"
     },
@@ -62,10 +58,8 @@ def complete_actions(data):
   )
 
   # Complete
-  requests.post(
-    url=comlete_url,
-    verify=False,
-    auth=lockfile.get_auth()
+  lockfile.get_session().post(
+    url=comlete_url
   )
 
 def get_local_player():
@@ -86,18 +80,14 @@ def get_local_player():
 def reroll():
   url = lockfile.get_url("lol-champ-select/v1/session/my-selection/reroll")
 
-  requests.post(
-    url=url,
-    verify=False,
-    auth=lockfile.get_auth()
+  lockfile.get_session().post(
+    url=url
   )
 
 
 def swapFromBench(champId: int):
   url = lockfile.get_url(f"lol-champ-select/v1/session/bench/swap/{champId}")
 
-  requests.post(
-    url=url,
-    auth=lockfile.get_auth(),
-    verify=False
+  lockfile.get_session().post(
+    url=url
   )
