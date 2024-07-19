@@ -38,7 +38,7 @@ parser.add_argument(
 args = parser.parse_args()
 
 if __name__ == "__main__":
-  logging.basicConfig(handlers=[RichHandler()])
+  logging.basicConfig(level="DEBUG", handlers=[RichHandler()])
   lockfile.load_file(args.lockfile)
   console = Console()
 
@@ -67,4 +67,4 @@ if __name__ == "__main__":
           action["championId"] = championID
           champSelect.complete_actions(action)
 
-      # time.sleep(.1)
+      time.sleep(250)
