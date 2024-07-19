@@ -6,6 +6,7 @@ import rich.json
 from rich.panel import Panel
 from rich import pretty, console
 
+import util
 from lol import *
 
 parser = ArgumentParser("TODO")
@@ -66,7 +67,8 @@ def old_and_bad(name: str, data: any):
   pass
 
 if __name__ == "__main__":
-  
+  util.add_logging(args)
+
   if(not ensure_dir(args.dir)):
     exit(1)
 
