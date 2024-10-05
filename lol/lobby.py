@@ -9,9 +9,7 @@ def get_lobby():
   url = lockfile.get_url("lol-lobby/v2/lobby")
 
   response = lockfile.get_session().get(
-    url=url,
-    verify=False,
-    auth=("riot", lockfile.get_password())
+    url=url
   )
 
   if(not response.ok):
@@ -28,8 +26,6 @@ def try_create_lobby(id: int):
 
   response = lockfile.get_session().post(
     url=url,
-    verify=False,
-    auth=("riot",lockfile.get_password()),
     headers={
       "content-type": "application/json"
     },
@@ -45,36 +41,28 @@ def leav_lobby():
   url = lockfile.get_url("lol-lobby/v2/lobby")
 
   lockfile.get_session().delete(
-    url,
-    verify=False,
-    auth=("riot",lockfile.get_password())
+    url
   )
 
 def start_search():
   url = lockfile.get_url("lol-lobby/v2/lobby/matchmaking/search")
 
   lockfile.get_session().post(
-    url,
-    verify=False,
-    auth=("riot",lockfile.get_password()),
+    url
   )
 
 def stop_search():
   url = lockfile.get_url("lol-lobby/v2/lobby/matchmaking/search")
 
   lockfile.get_session().delete(
-    url=url,
-    verify=False,
-    auth=("riot",lockfile.get_password())
+    url=url
   )
 
 def get_search_state():
   url = lockfile.get_url("lol-lobby/v2/lobby/matchmaking/search-state")
 
   response = lockfile.get_session().get(
-    url=url,
-    verify=False,
-    auth=("riot", lockfile.get_password())
+    url=url
   )
 
   if(not response.ok):
@@ -88,9 +76,7 @@ def accept_ready_check():
   url = lockfile.get_url("lol-matchmaking/v1/ready-check/accept")
 
   lockfile.get_session().post(
-    url=url,
-    verify=False,
-    auth=("riot",lockfile.get_password())
+    url=url
   )
 
 def stop_queue():
