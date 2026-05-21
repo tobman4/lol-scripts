@@ -1,64 +1,38 @@
 from io import TextIOWrapper
+from logging import getLogger
+
+from urllib.parse import urljoin
 
 from requests.sessions import Session
 
+_logger = getLogger("lockfile")
 _text: str | None = None
 _session: Session | None = None
 
-def load_file(file: TextIOWrapper):
-  global _text
-  _text = file.readline().strip()
+class ApiSession(Session):
+    def __init__(self):
+        super().__init__()
 
-def load_path(path):
-  global _text
+        self._is_ready = False
+        self._base_url: str
+        self._auth: str
+        self.verify = False
 
-  try:
-    file = open(path)
-    _text = file.readline().strip()
-  except:
-    raise Exception("Failed to open lockfile")
+    def load_lock(self, path: str):
+        _logger.debug("Loading %s", path)
 
+        with open(path, "r") as f:
+            split = f.readline().strip().split(":")
+            
+            self._base_url = f"https://127.0.0.1:{split[2]}"
+            self_auth = split[3]
+        
+        _logger.debug("URL: %s", self._base_url)
+        self._is_ready = True
 
-def get_all_fields():
-  global _text
+    def request(self, method, url, *args, **kwargs):
+        if(not self._is_ready):
+            raise Exception("No lockfile loaded")
 
-  if(_text is None):
-    raise Exception("No lockfile loaded")  
-
-  return _text.split(":")
-
-def get_proc_name():
-  data = get_all_fields()
-  return data[0]
-
-def get_proc_id():
-  data = get_all_fields()
-  return int(data[1])
-
-def get_port():
-  data = get_all_fields()
-  return int(data[2])
-
-def get_password():
-  data = get_all_fields()
-  return data[3]
-
-def get_protocl():
-  data = get_all_fields()
-  return data[4]
-
-def get_url(path: str):
-  return f"https://127.0.0.1:{get_port()}/{path}"
-
-def get_auth():
-  return ("riot", get_password())
-
-def get_session():
-  global _session
-
-  if(_session is None):
-    _session = Session()
-    _session.verify = False
-    _session.auth = get_auth()
-
-  return _session
+        full_url = urljoin(self._base_url, url)
+        return super().request(method, full_url, *args, **kwargs)
