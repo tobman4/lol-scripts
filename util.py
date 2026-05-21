@@ -36,7 +36,7 @@ def init(args: Namespace):
     api_session.load_lock(args.lockfile)
 
 def sleep_for_range(txt: str):
-  rx = "^(\d+)(?::(\d+))?$"
+  rx = r"^(\d+)(?::(\d+))?$"
   res = re.search(rx,txt)
 
 
