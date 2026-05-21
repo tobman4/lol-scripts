@@ -4,6 +4,7 @@ from argparse import ArgumentParser, FileType
 from rich.console import Console
 
 from lol import *
+from lol.lockfile import api_session
 
 parser = ArgumentParser(
   description="Change lobby to tft then leav"
@@ -27,7 +28,7 @@ parser.add_argument(
 args = parser.parse_args()
 
 if __name__ == "__main__":
-  lockfile.load_file(args.lockfile)
+  api_session.load_lock(args.lockfile)
 
   console = Console()
 

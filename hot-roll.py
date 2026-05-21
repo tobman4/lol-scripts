@@ -16,7 +16,7 @@ parser.add_argument(
 args = parser.parse_args()
 
 if __name__ == "__main__":
-  lockfile.load_file(args.lockfile)
+  lockfile.api_session.load_lock(args.lockfile)
 
   player = champSelect.get_local_player()
   if(player is None):

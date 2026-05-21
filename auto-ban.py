@@ -39,7 +39,7 @@ args = parser.parse_args()
 
 if __name__ == "__main__":
   logging.basicConfig(level="DEBUG", handlers=[RichHandler()])
-  lockfile.load_file(args.lockfile)
+  lockfile.api_session.load_lock(args.lockfile)
   console = Console()
 
   championID = champions.get_by_name(args.champion)["key"]

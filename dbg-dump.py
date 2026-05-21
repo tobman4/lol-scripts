@@ -8,6 +8,7 @@ from rich import pretty, console
 
 import util
 from lol import *
+from lol.lockfile import api_session
 
 parser = ArgumentParser("TODO")
 
@@ -77,7 +78,7 @@ if __name__ == "__main__":
   # pretty.install()
   c = console.Console()
 
-  lockfile.load_file(args.lockfile)
+  api_session.load_lock(args.lockfile)
 
   # Collet data
   with c.status("Getting data...") as status:

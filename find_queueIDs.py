@@ -8,6 +8,7 @@ import requests
 # from rich.console import Console
 
 from lol import *
+from lol.lockfile import api_session
 
 parser = ArgumentParser(
   description="TODO"
@@ -80,7 +81,7 @@ def write_info(id: int):
   )
 
 if __name__ == "__main__":
-  lockfile.load_file(args.lockfile)
+  api_session.load_lock(args.lockfile)
 
   if(args.end < args.start):
     print("end cant be less then start")

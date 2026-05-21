@@ -6,6 +6,7 @@ from rich.console import Console
 
 import util
 from lol import *
+from lol.lockfile import api_session
 
 parser = ArgumentParser("Test script")
 
@@ -45,7 +46,7 @@ if __name__ == "__main__":
   console = Console()
   util.add_logging(args)
 
-  lockfile.load_file(args.lockfile)
+  api_session.load_lock(args.lockfile)
 
   console.log("Starting queue")
   lobby.start_search()
