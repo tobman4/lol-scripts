@@ -3,16 +3,11 @@ import requests
 
 import rich
 
-from . import lockfile
+# from . import lockfile
+from .lockfile import api_session
 
 def get_lobby():
-  url = lockfile.get_url("lol-lobby/v2/lobby")
-
-  response = lockfile.get_session().get(
-    url=url,
-    verify=False,
-    auth=("riot", lockfile.get_password())
-  )
+  response = api_session.get("lol-lobby/v2/lobby")
 
   if(not response.ok):
     return None
@@ -20,16 +15,12 @@ def get_lobby():
   return response.json()
 
 def try_create_lobby(id: int):
-  url = lockfile.get_url("lol-lobby/v2/lobby")
-
   body = {
     "queueId": id
   }
 
-  response = lockfile.get_session().post(
-    url=url,
-    verify=False,
-    auth=("riot",lockfile.get_password()),
+  response = api_session.post(
+    url="lol-lobby/v2/lobby",
     headers={
       "content-type": "application/json"
     },
@@ -42,40 +33,18 @@ def try_create_lobby(id: int):
   return response.json()
 
 def leav_lobby():
-  url = lockfile.get_url("lol-lobby/v2/lobby")
+  api_session.delete("lol-lobby/v2/lobby")
 
-  lockfile.get_session().delete(
-    url,
-    verify=False,
-    auth=("riot",lockfile.get_password())
-  )
 
 def start_search():
-  url = lockfile.get_url("lol-lobby/v2/lobby/matchmaking/search")
-
-  lockfile.get_session().post(
-    url,
-    verify=False,
-    auth=("riot",lockfile.get_password()),
-  )
+  api_session.post("lol-lobby/v2/lobby/matchmaking/search")
 
 def stop_search():
-  url = lockfile.get_url("lol-lobby/v2/lobby/matchmaking/search")
-
-  lockfile.get_session().delete(
-    url=url,
-    verify=False,
-    auth=("riot",lockfile.get_password())
-  )
+  api_session.delete("lol-lobby/v2/lobby/matchmaking/search")
 
 def get_search_state():
-  url = lockfile.get_url("lol-lobby/v2/lobby/matchmaking/search-state")
 
-  response = lockfile.get_session().get(
-    url=url,
-    verify=False,
-    auth=("riot", lockfile.get_password())
-  )
+  response = api_session.get("lol-lobby/v2/lobby/matchmaking/search-state")
 
   if(not response.ok):
     return None
@@ -85,17 +54,8 @@ def get_search_state():
   return data["searchState"]
 
 def accept_ready_check():
-  url = lockfile.get_url("lol-matchmaking/v1/ready-check/accept")
-
-  lockfile.get_session().post(
-    url=url,
-    verify=False,
-    auth=("riot",lockfile.get_password())
-  )
+  api_session.post("lol-matchmaking/v1/ready-check/accept")
 
 def stop_queue():
-  url = lockfile.get_url("lol-matchmaking/v1/search")
+  api_session("lol-matchmaking/v1/search")
 
-  lockfile.get_session().delete(
-    url=url,
-  )
