@@ -8,15 +8,10 @@ from rich import pretty, console
 
 import util
 from lol import *
+from lol.lockfile import api_session
 
 parser = ArgumentParser("TODO")
-
-parser.add_argument(
-  "-l",
-  default="C:\\Riot Games\\League of Legends\\lockfile",
-  dest="lockfile",
-  type=FileType("r")
-)
+parser.setup_env()
 
 parser.add_argument(
   "-d",
@@ -67,7 +62,7 @@ def old_and_bad(name: str, data: any):
   pass
 
 if __name__ == "__main__":
-  util.add_logging(args)
+  util.init(args)
 
   if(not ensure_dir(args.dir)):
     exit(1)
@@ -76,8 +71,6 @@ if __name__ == "__main__":
   data = {}
   # pretty.install()
   c = console.Console()
-
-  lockfile.load_file(args.lockfile)
 
   # Collet data
   with c.status("Getting data...") as status:

@@ -6,15 +6,10 @@ from rich.console import Console
 
 import util
 from lol import *
+from lol.lockfile import api_session
 
 parser = ArgumentParser("Test script")
-
-parser.add_argument(
-  "-l",
-  default="C:\\Riot Games\\League of Legends\\lockfile",
-  dest="lockfile",
-  type=FileType("r")
-)
+parser.setup_env()
 
 parser.add_argument(
   "-m",
@@ -43,9 +38,7 @@ args = parser.parse_args()
 
 if __name__ == "__main__":
   console = Console()
-  util.add_logging(args)
-
-  lockfile.load_file(args.lockfile)
+  util.init(args)
 
   console.log("Starting queue")
   lobby.start_search()

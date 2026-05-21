@@ -7,18 +7,14 @@ from argparse import ArgumentParser, FileType
 import requests
 # from rich.console import Console
 
+import util
 from lol import *
+from lol.lockfile import api_session
 
 parser = ArgumentParser(
   description="TODO"
 )
-
-parser.add_argument(
-  "-l",
-  dest="lockfile",
-  default="C:\\Riot Games\\League of Legends\\lockfile",
-  type=FileType("r")
-)
+parser.setup_env()
 
 parser.add_argument(
   "-f",
@@ -80,7 +76,7 @@ def write_info(id: int):
   )
 
 if __name__ == "__main__":
-  lockfile.load_file(args.lockfile)
+  util.init(args)
 
   if(args.end < args.start):
     print("end cant be less then start")

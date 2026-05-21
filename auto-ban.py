@@ -7,17 +7,12 @@ from rich.console import Console
 from rich.logging import RichHandler
 import rich.spinner
 
+import util
 from lol import lockfile, champSelect
 from ddragon import champions
 
 parser = ArgumentParser("Test script")
-
-parser.add_argument(
-  "-l",
-  dest="lockfile",
-  default="C:\\Riot Games\\League of Legends\\lockfile",
-  type=FileType("r")
-)
+parser.setup_env()
 
 # parser.add_argument(
 #   "-i",
@@ -38,8 +33,7 @@ parser.add_argument(
 args = parser.parse_args()
 
 if __name__ == "__main__":
-  logging.basicConfig(level="DEBUG", handlers=[RichHandler()])
-  lockfile.load_file(args.lockfile)
+  util.init(args)
   console = Console()
 
   championID = champions.get_by_name(args.champion)["key"]

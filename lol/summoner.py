@@ -1,12 +1,10 @@
 import requests
 
-from . import lockfile
+from .lockfile import api_session
 
 def get_summoner():
-  url = lockfile.get_url("lol-summoner/v1/current-summoner")
-
-  result = lockfile.get_session().get(
-    url=url
+  result = api_session.get(
+    url="lol-summoner/v1/current-summoner"
   )
 
   if(not result.ok):

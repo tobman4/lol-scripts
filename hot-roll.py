@@ -2,21 +2,16 @@ import time
 
 from argparse import ArgumentParser, FileType
 
+import util
 from lol import lockfile, champSelect
 
 parser = ArgumentParser("Test script")
-
-parser.add_argument(
-  "-l",
-  dest="lockfile",
-  default="C:\\Riot Games\\League of Legends\\lockfile",
-  type=FileType("r")
-)
+parser.setup_env()
 
 args = parser.parse_args()
 
 if __name__ == "__main__":
-  lockfile.load_file(args.lockfile)
+  util.init(args)
 
   player = champSelect.get_local_player()
   if(player is None):
