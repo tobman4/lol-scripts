@@ -1,12 +1,10 @@
 import requests
 
-from . import lockfile
+from .lockfile import api_session
 
 def get_gameflow_phase() -> str:
-  url = lockfile.get_url("lol-gameflow/v1/gameflow-phase")
-
-  response = lockfile.get_session().get(
-    url=url
+  response = api_session.get(
+    url="lol-gameflow/v1/gameflow-phase"
   )
 
   if(not response.ok):

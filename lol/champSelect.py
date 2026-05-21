@@ -2,29 +2,14 @@ import json
 
 import requests
 
-from . import lockfile, summoner
-
-def shallow_call(func):
-  def wrapper():
-    result = func()
-
-    if(not result.ok):
-      return None
-  
-    return result.json()
-
-  return wrapper
-
-@shallow_call
-def get_session():
-  url = lockfile.get_url("lol-champ-select/v1/session")
-  
-  return lockfile.get_session().get(
-    url=url
-  )
+from .lockfile import api_session
+from . import summoner
 
 def get_current_action():
-  session = get_session()
+  response = api_session.get("lol-champ-select/v1/session")
+  if not response.ok:
+    return None
+  session = response.json()
 
   if(session is None):
     return
@@ -45,12 +30,9 @@ def get_current_action():
 def complete_actions(data):
   action_id = data["id"]
 
-  path_url = lockfile.get_url(f"lol-champ-select/v1/session/actions/{action_id}")
-  comlete_url = lockfile.get_url(f"lol-champ-select/v1/session/actions/{action_id}/complete")
-
   # Update action
-  lockfile.get_session().patch(
-    url=path_url,
+  api_session.patch(
+    url=f"lol-champ-select/v1/session/actions/{action_id}",
     headers={
       "Content-Type": "application/json"
     },
@@ -58,13 +40,16 @@ def complete_actions(data):
   )
 
   # Complete
-  lockfile.get_session().post(
-    url=comlete_url
+  api_session.post(
+    url=f"lol-champ-select/v1/session/actions/{action_id}/complete"
   )
 
 def get_local_player():
   summoner_data = summoner.get_summoner()
-  session = get_session()
+  response = api_session.get("lol-champ-select/v1/session")
+  if not response.ok:
+    return None
+  session = response.json()
 
   if(session is None):
     return None
@@ -78,16 +63,12 @@ def get_local_player():
   return None
 
 def reroll():
-  url = lockfile.get_url("lol-champ-select/v1/session/my-selection/reroll")
-
-  lockfile.get_session().post(
-    url=url
+  api_session.post(
+    url="lol-champ-select/v1/session/my-selection/reroll"
   )
 
 
 def swapFromBench(champId: int):
-  url = lockfile.get_url(f"lol-champ-select/v1/session/bench/swap/{champId}")
-
-  lockfile.get_session().post(
-    url=url
+  api_session.post(
+    url=f"lol-champ-select/v1/session/bench/swap/{champId}"
   )
