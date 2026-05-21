@@ -1,13 +1,14 @@
 from io import TextIOWrapper
 from logging import getLogger
 
+import urllib3
 from urllib.parse import urljoin
 
 from requests.sessions import Session
 
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 _logger = getLogger("lockfile")
-_text: str | None = None
-_session: Session | None = None
 
 class ApiSession(Session):
     def __init__(self):
@@ -25,7 +26,7 @@ class ApiSession(Session):
             split = f.readline().strip().split(":")
             
             self._base_url = f"https://127.0.0.1:{split[2]}"
-            self_auth = split[3]
+            self.auth = ("riot", split[3])
         
         _logger.debug("URL: %s", self._base_url)
         self._is_ready = True
@@ -36,3 +37,6 @@ class ApiSession(Session):
 
         full_url = urljoin(self._base_url, url)
         return super().request(method, full_url, *args, **kwargs)
+
+
+api_session = ApiSession()
