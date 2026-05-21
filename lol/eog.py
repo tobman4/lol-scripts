@@ -1,12 +1,10 @@
 import requests
 
-from . import lockfile
+from .lockfile import api_session
 
 def get_eog_data():
-  url = lockfile.get_url("lol-end-of-game/v1/eog-stats-block")
-
-  response = lockfile.get_session().get(
-    url=url
+  response = api_session.get(
+    url="lol-end-of-game/v1/eog-stats-block"
   )
 
   if(not response.ok):

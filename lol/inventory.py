@@ -3,12 +3,11 @@ from typing import List
 
 import requests
 
-from . import lockfile
+from .lockfile import api_session
 
 def get_all_loot(type: str = ""):
-  url = lockfile.get_url("lol-loot/v1/player-loot")
-  result = lockfile.get_session().get(
-    url=url
+  result = api_session.get(
+    url="lol-loot/v1/player-loot"
   )
 
   if(not result.ok):
@@ -28,9 +27,8 @@ def get_loot_by_lootId(id: str):
 
 def yolo_disenchant(itemIds: List[str], count: int = 1):
 
-  url = lockfile.get_url(f"lol-loot/v1/recipes/CHAMPION_RENTAL_disenchant/craft?repeat={count}")
-  result = lockfile.get_session().post(
-    url=url,
+  result = api_session.post(
+    url=f"lol-loot/v1/recipes/CHAMPION_RENTAL_disenchant/craft?repeat={count}",
     headers={
       "Content-Type": "application/json"
     },
