@@ -24,7 +24,7 @@ def look_for_targer(target: str) -> int:
   for player in players:
     name = player["gameName"] + "#" + player["gameTag"]
     if(name == target):
-      logging.info(f"Found target {target} with availability {player['availability']}")
+      logging.debug(f"Found target {target} with availability {player['availability']}")
 
       return player["summonerId"] if player["availability"] not in ["offline", "mobile"] else None
   
@@ -34,6 +34,8 @@ def triger_trap(summonerId: int):
   """
   Create lobby and invite target
   """
+  logging.info(f"Creating lobby and inviting target with summonerId {summonerId}")
+
   lobby.try_create_lobby(420)
   lobby.invite_to_lobby(summonerId)
 
@@ -65,14 +67,14 @@ def main():
     triger_trap(summonerId)
     getaway()
     
-    exit(0)
+    util.sleep_for_range("60:120")
 
 
 
 if __name__ == "__main__":
   args = parser.parse_args()
   util.init(args)
-
+  
   try:
     main()
   except KeyboardInterrupt:
