@@ -18,7 +18,7 @@ def setup_env(self: ArgumentParser):
   self.add_argument(
     "--log-level",
     dest="log_level",
-    default="DEBUG",
+    default="INFO",
     type=str,
     help="Logging level (e.g., DEBUG, INFO)"
   )
