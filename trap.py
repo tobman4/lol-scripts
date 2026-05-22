@@ -39,7 +39,7 @@ def triger_trap(summonerId: int, chatId: str):
 
   lobby.try_create_lobby(420)
   lobby.invite_to_lobby(summonerId)
-  friends.send_message("Hey dude want to play a game?")
+  friends.send_message(chatId,"Hey dude want to play a game?")
 
 def getaway():
   """
