@@ -4,7 +4,7 @@ from argparse import ArgumentParser
 
 import util
 
-from lol import friends
+from lol import friends, lobby
 
 
 parser = ArgumentParser("trap", description="invite somone then leave the lobby")
@@ -15,7 +15,7 @@ parser.add_argument(
   required=True
 )
 
-def look_for_targer(target: str) -> bool:
+def look_for_targer(target: str) -> int:
   """
   Make sure target is online
   """
@@ -25,26 +25,45 @@ def look_for_targer(target: str) -> bool:
     name = player["gameName"] + "#" + player["gameTag"]
     if(name == target):
       logging.info(f"Found target {target} with availability {player['availability']}")
-      return player["availability"] not in ["offline", "mobile"]
+
+      return player["summonerId"] if player["availability"] not in ["offline", "mobile"] else None
   
   raise Exception("Bad target riotID")
 
-def triger_trap():
+def triger_trap(summonerId: int):
   """
   Create lobby and invite target
   """
-  pass
+  lobby.try_create_lobby(420)
+  lobby.invite_to_lobby(summonerId)
 
 def getaway():
   """
   Cleanup and go to sleep
   """
+  while True:
+    members = lobby.get_lobby_members()
+
+    if(len(members) >= 2):
+      logging.info("Target is here, scram!!")
+      lobby.leav_lobby()
+      return
+
+    logging.info(f"Waiting for target to join")
+    time.sleep(5)
+
 def main():
 
   while True:    
-    if(not look_for_targer(args.target)):
+
+    summonerId = look_for_targer(args.target)
+
+    if(not summonerId):
       time.sleep(3)
       continue
+
+    triger_trap(summonerId)
+    getaway()
     
     exit(0)
 
