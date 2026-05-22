@@ -43,3 +43,12 @@ def yolo_disenchant(itemIds: List[str], count: int = 1):
 
 def craft():
   pass
+def get_loot_items():
+  result = api_session.get(
+    url="lol-loot/v1/loot-items"
+  )
+
+  if(not result.ok):
+    return []
+
+  return result.json()
