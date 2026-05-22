@@ -59,3 +59,13 @@ def accept_ready_check():
 def stop_queue():
   api_session("lol-matchmaking/v1/search")
 
+def invite_to_lobby(summonerId: int):
+  api_session.post(f"lol-lobby/v2/lobby/invitations", json=[{"toSummonerId": summonerId}])
+
+def get_lobby_members():
+  response = api_session.get("lol-lobby/v2/lobby/members")
+
+  if(not response.ok):
+    return []
+
+  return response.json()

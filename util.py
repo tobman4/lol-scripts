@@ -18,7 +18,7 @@ def setup_env(self: ArgumentParser):
   self.add_argument(
     "--log-level",
     dest="log_level",
-    default="DEBUG",
+    default="INFO",
     type=str,
     help="Logging level (e.g., DEBUG, INFO)"
   )
@@ -35,8 +35,8 @@ def init(args: Namespace):
   if hasattr(args, "lockfile"):
     api_session.load_lock(args.lockfile)
 
-def sleep_for_range(txt: str):
-  rx = r"^(\d+)(?::(\d+))?$"
+def sleep_for_range(txt: str): # Wtf?
+  rx = "^(\d+)(?::(\d+))?$"
   res = re.search(rx,txt)
 
 
