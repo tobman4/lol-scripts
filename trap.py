@@ -27,7 +27,7 @@ def look_for_targer(target: str) -> (int, str):
     if(name == target):
       logging.debug(f"Found target {target} with availability {player['availability']}")
 
-      return player["summonerId"] if player["availability"] not in ["offline", "mobile"] else None
+      return (player["summonerId"], player["id"]) if player["availability"] not in ["offline", "mobile"] else None
   
   raise Exception("Bad target riotID")
 
