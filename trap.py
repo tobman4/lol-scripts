@@ -16,7 +16,7 @@ parser.add_argument(
   required=True
 )
 
-def look_for_targer(target: str) -> int:
+def look_for_targer(target: str) -> (int, str):
   """
   Make sure target is online
   """
@@ -31,7 +31,7 @@ def look_for_targer(target: str) -> int:
   
   raise Exception("Bad target riotID")
 
-def triger_trap(summonerId: int):
+def triger_trap(summonerId: int, chatId: str):
   """
   Create lobby and invite target
   """
@@ -39,6 +39,7 @@ def triger_trap(summonerId: int):
 
   lobby.try_create_lobby(420)
   lobby.invite_to_lobby(summonerId)
+  friends.send_message("Hey dude want to play a game?")
 
 def getaway():
   """
@@ -65,13 +66,13 @@ def main():
 
   while True:    
 
-    summonerId = look_for_targer(args.target)
+    (summonerId, chatId) = look_for_targer(args.target)
 
     if(not summonerId):
       time.sleep(3)
       continue
-
-    triger_trap(summonerId)
+    
+    triger_trap(summonerId, chatId)
     getaway()
     
     util.sleep_for_range("60:120")

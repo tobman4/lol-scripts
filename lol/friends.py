@@ -11,3 +11,12 @@ def get_friendlist():
     return []
 
   return result.json()
+
+def send_message(id: str, body: str):
+  api_session.post(
+    url=f"lol-chat/v1/conversations/{id}/messages",
+    json={
+      "body": body
+    }
+  )
+
