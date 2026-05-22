@@ -1,5 +1,6 @@
 import time
 import logging
+from datetime import datetime
 from argparse import ArgumentParser
 
 import util
@@ -43,11 +44,17 @@ def getaway():
   """
   Cleanup and go to sleep
   """
+  start = datetime.now()
+
   while True:
     members = lobby.get_lobby_members()
 
     if(len(members) >= 2):
       logging.info("Target is here, scram!!")
+      lobby.leav_lobby()
+      return
+
+    if((datetime.now() - start).total_seconds() > 30):
       lobby.leav_lobby()
       return
 
