@@ -32,6 +32,24 @@ def try_create_lobby(id: int):
 
   return response.json()
 
+def move_sub_team(index: int, team_index: int):
+  body = {
+    "subteamIndex": index,
+    "intraSubteamPosition": team_index
+  }
+
+  response = api_session.put(
+    url="lol-lobby/v2/lobby/subteamData",
+    json=body
+  )
+
+  if(not response.ok):
+    return False
+
+  return True
+
+
+
 def leav_lobby():
   api_session.delete("lol-lobby/v2/lobby")
 
