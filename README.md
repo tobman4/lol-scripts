@@ -1,54 +1,65 @@
-# lol-scripts
+# League of Legends Scripts
+
+A collection of Python scripts for automating tasks and gathering data from the League of Legends client using the LCU (League Client Update) API.
+
+## Prerequisites
+
+- Python 3.x
+- League of Legends Client
 
 ## Setup
 
-1. Create python environment `python -m venv .`
-2. Activate python environment `./.env/activate`
-3. Install dependencies `pip install -r requirements.txt`
+1. **Create a virtual environment:**
+   ```bash
+   python -m venv .env
+   ```
+2. **Activate the environment:**
+   - **Windows:** `.\.env\Scripts\activate`
+   - **Linux/macOS:** `source .env/bin/activate`
+3. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-## Use
-1. Run `./.env/Scripts/activate`
-2. Run a script `python {script_name}.py`. Get help by using `python {script_name}.py --help`
+## Common Arguments
 
-## Scripts
+Most scripts utilize a shared utility module (`util.py`) and support these arguments:
 
-### smart-queue.py
+- `-l`, `--lockfile`: Path to the League of Legends `lockfile`. Defaults to `C:\Riot Games\League of Legends\lockfile` (Windows path).
+- `--log-level`: Set the logging level (e.g., `DEBUG`, `INFO`, `WARNING`, `ERROR`). Default is `INFO`.
 
-This script automates the process of queueing for a game. It continuously monitors the queue state and restarts the queue if it exceeds a specified maximum time. Additionally, it can automatically accept a match when found unless specified otherwise.
+## Available Scripts
 
-#### Features
+### Lobby & Queue Management
 
-- **Automatic Queue Management**: Starts and restarts the queue if it exceeds the maximum queue time.
-- **Match Acceptance**: Automatically accepts the match when found unless the `--no-accept` flag is used.
-- **Configurable Parameters**: Allows customization maximum queue time, and break time between queue restarts.
+- **`smart-queue.py`**: Automates queuing. Restarts the queue if it exceeds a maximum time and can automatically accept matches.
+  - Usage: `python smart-queue.py [-m MAX_QUEUE] [-b BREAK_TIME] [--no-accept]`
+- **`social_distancing.py`**: Moves you between subteams in a lobby to avoid being next to other players.
+  - Usage: `python social_distancing.py [-i INTERVAL]`
+- **`trap.py`**: Invites a specific summoner to your lobby and then immediately leaves.
+  - Usage: `python trap.py -t TARGET_NAME`
+- **`tft-funny.py`**: Quickly changes the lobby type to TFT and leaves.
+  - Usage: `python tft-funny.py [-s]` (use `-s` to try starting the queue before leaving).
 
-#### Usage
+### Champion Select
 
-##### Command Line Arguments
+- **`auto-ban.py`**: Automatically bans a specified champion when you enter Champion Select.
+  - Usage: `python auto-ban.py -c CHAMPION_NAME`
+- **`hot-roll.py`**: In ARAM, rerolls a champion and then immediately attempts to swap back to the previous one (to help teammates or "thin" the pool).
+  - Usage: `python hot-roll.py`
 
-- `-l` or `--lockfile`: Path to the League of Legends lockfile. Default is `C:\\Riot Games\\League of Legends\\lockfile`.
-- `-m` or `--max_queue`: Maximum time (in seconds) to wait in the queue before restarting. Default is 30 seconds.
-- `-b` or `--break_time`: Break time (in seconds) between queue restarts. Default is 5 seconds.
-- `--no-accept`: If specified, the script will not automatically accept the match when found.
+### Data & Debugging
 
-#### Example Command
+- **`dump-inventory.py`**: Exports your player inventory (champions, skins, etc.).
+  - Usage: `python dump-inventory.py [--format {console,json,csv}]`
+- **`eog.py`**: Displays End-of-Game (EOG) statistics in a formatted table after a match.
+  - Usage: `python eog.py`
+- **`dbg-dump.py`**: Dumps raw LCU API data for various endpoints to a directory for debugging purposes.
+- **`find_queueIDs.py`**: Brute-forces or scans a range of IDs to identify valid LCU queue IDs.
 
-```sh
-python smart-queue.py -l "path/to/lockfile" -m 60 -b 10 --no-accept
-```
+## Project Structure
 
-### hot-roll.py
-
-This script automates actions during the champion select phase in aram. It reroll then immediately swap back.
-
-#### Usage
-
-##### Command Line Arguments
-
-- `-l` or `--lockfile`: Path to the League of Legends lockfile. Default is `C:\\Riot Games\\League of Legends\\lockfile`.
-
-#### Example Command
-
-```sh
-python champ-select.py -l "path/to/lockfile"
-```
+- **`lol/`**: Contains modules for interacting with different LCU API domains (Lobby, Champ Select, Inventory, etc.).
+- **`riot/`**: Modules for Riot-specific account APIs.
+- **`ddragon/`**: Utility for fetching champion data and versions from Riot's Data Dragon.
+- **`util.py`**: Shared logic for argument parsing, environment setup, and common helpers.
