@@ -17,7 +17,7 @@ if __name__ == "__main__":
   util.init(args)
   data = eog.get_eog_data()
 
-  table = Table(Title="Players")
+  table = Table(title="Players")
   table.add_column("Role")
   table.add_column("Riot ID")
   table.add_column("Champion")
@@ -29,8 +29,10 @@ if __name__ == "__main__":
       player["selectedPosition"],
       player["riotIdGameName"] + "#" + player["riotIdTagLine"],
       player["championName"],
-      player["level"]
+      str(player["level"])
     )
+
+  table.add_row() # Empty row to separate teams
 
   # Team 2
   for player in data["teams"][1]["players"]:
@@ -38,7 +40,7 @@ if __name__ == "__main__":
       player["selectedPosition"],
       player["riotIdGameName"] + "#" + player["riotIdTagLine"],
       player["championName"],
-      player["level"]
+      str(player["level"])
     )
     
   Console().print(table)
