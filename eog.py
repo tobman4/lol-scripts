@@ -23,24 +23,14 @@ if __name__ == "__main__":
   table.add_column("Champion")
   table.add_column("Level")
 
-    # Team 1
-  for player in data["teams"][0]["players"]:
-    table.add_row(
-      player["selectedPosition"],
-      player["riotIdGameName"] + "#" + player["riotIdTagLine"],
-      player["championName"],
-      str(player["level"])
-    )
+  for team in data["teams"]:
+    for player in team["players"]:
+      table.add_row(
+        player["selectedPosition"],
+        player["riotIdGameName"] + "#" + player["riotIdTagLine"],
+        player["championName"],
+        str(player["level"])
+      )
+    table.add_row() # Empty row to separate teams
 
-  table.add_row() # Empty row to separate teams
-
-  # Team 2
-  for player in data["teams"][1]["players"]:
-    table.add_row(
-      player["selectedPosition"],
-      player["riotIdGameName"] + "#" + player["riotIdTagLine"],
-      player["championName"],
-      str(player["level"])
-    )
-    
   Console().print(table)
