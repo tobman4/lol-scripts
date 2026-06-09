@@ -28,7 +28,7 @@ if __name__ == "__main__":
     table.add_row(
       player["selectedPosition"],
       player["riotIdGameName"] + "#" + player["riotIdTagLine"],
-      player["championName"]
+      player["championName"],
       player["level"]
     )
 
@@ -37,7 +37,7 @@ if __name__ == "__main__":
     table.add_row(
       player["selectedPosition"],
       player["riotIdGameName"] + "#" + player["riotIdTagLine"],
-      player["championName"]
+      player["championName"],
       player["level"]
     )
     
