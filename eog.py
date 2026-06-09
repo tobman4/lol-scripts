@@ -23,7 +23,7 @@ if __name__ == "__main__":
   table.add_column("Champion")
   table.add_column("Level")
 
-  for team in data["teams"]:
+  for i, team in enumerate(data["teams"]):
     for player in team["players"]:
       table.add_row(
         player["selectedPosition"],
@@ -31,6 +31,7 @@ if __name__ == "__main__":
         player["championName"],
         str(player["level"])
       )
-    table.add_row() # Empty row to separate teams
+    if i < len(data["teams"]) - 1:
+      table.add_row() # Empty row to separate teams
 
   Console().print(table)
