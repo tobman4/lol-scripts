@@ -27,7 +27,7 @@ if __name__ == "__main__":
   for player in data["teams"][0]["players"]:
     table.add_row(
       player["selectedPosition"],
-      f"{player["riotIdGameName"]}#{player["riotIdTagLine"]}",
+      player["riotIdGameName"] + "#" + player["riotIdTagLine"],
       player["championName"]
       player["level"]
     )
@@ -36,7 +36,7 @@ if __name__ == "__main__":
   for player in data["teams"][1]["players"]:
     table.add_row(
       player["selectedPosition"],
-      f"{player["riotIdGameName"]}#{player["riotIdTagLine"]}",
+      player["riotIdGameName"] + "#" + player["riotIdTagLine"],
       player["championName"]
       player["level"]
     )
