@@ -16,6 +16,12 @@ parser.add_argument(
   required=True
 )
 
+parser.add_argument(
+  "-s", "--sleep",
+  default="60:120",
+  help="Time to sleep between traps in seconds, can be a range like 60:120"
+)
+
 def look_for_targer(target: str) -> (int, str):
   """
   Make sure target is online
@@ -75,7 +81,7 @@ def main():
     triger_trap(summonerId, chatId)
     getaway()
     
-    util.sleep_for_range("60:120")
+    util.sleep_for_range(args.sleep)
 
 
 
